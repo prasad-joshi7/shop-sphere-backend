@@ -43,7 +43,8 @@ public class AppConfig {
 				CorsConfiguration cfg = new CorsConfiguration();
 				cfg.setAllowedOrigins(Arrays.asList(
 						"http://localhost:3000",
-						"http://localhost:4000"
+						"http://localhost:4000",
+						"https://ecommerce-shop-sphere-xvem.vercel.app"
 				));
 				cfg.setAllowedMethods(Collections.singletonList("*"));
 				cfg.setAllowCredentials(true);
