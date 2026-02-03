@@ -42,6 +42,8 @@ public class AppConfig {
 			public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
 				CorsConfiguration cfg = new CorsConfiguration();
 				cfg.setAllowedOriginPatterns(Arrays.asList(
+					    "https://ecommerce-shop-sphere-ten.vercel.app",
+						"https://frontend-shop-sphere.vercel.app",
 						"http://localhost:*",
 						"https://*.vercel.app"
 				));
