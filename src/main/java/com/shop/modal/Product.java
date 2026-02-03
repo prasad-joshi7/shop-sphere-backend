@@ -28,8 +28,8 @@ import lombok.*;
 @AllArgsConstructor
 public class Product {
 
-	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "title")
@@ -43,8 +43,8 @@ public class Product {
 
     @Column(name = "discounted_price")
     private int discountedPrice;
-    
-    @Column(name="discount_persent")
+
+    @Column(name = "discount_persent")
     private int discountPersent;
 
     @Column(name = "quantity")
@@ -56,31 +56,26 @@ public class Product {
     @Column(name = "color")
     private String color;
 
-
     @ElementCollection
     @Column(name = "sizes")
-    private Set<Size> sizes=new HashSet<>();
+    private Set<Size> sizes = new HashSet<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Rating>ratings=new ArrayList<>();
-    
-    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Review>reviews=new ArrayList<>();
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rating> ratings = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
 
     @Column(name = "num_ratings")
     private int numRatings;
-    
 
     @ManyToOne()
-    @JoinColumn(name="category_id")
+    @JoinColumn(name = "category_id")
     private Category category;
-    
+
     private LocalDateTime createdAt;
-    
 
-
-   
 }

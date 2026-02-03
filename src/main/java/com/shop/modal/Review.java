@@ -22,25 +22,22 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Review {
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String review;
-	
+
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id")
 	@JsonIgnore
 	private Product product;
 
 	@ManyToOne
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	private LocalDateTime createdAt;
-	
-
-
 
 }
