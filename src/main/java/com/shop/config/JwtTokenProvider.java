@@ -17,10 +17,13 @@ import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtTokenProvider {
-	
-	private SecretKey key=Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
-	
+
+	private SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
+
 	public String generateToken(Authentication auth) {
+		if (auth == null) {
+			throw new IllegalArgumentException("Authentication object cannot be null for token generation.");
+		}
 
 		String jwt = Jwts.builder()
 				.setIssuedAt(new Date())
@@ -32,23 +35,25 @@ public class JwtTokenProvider {
 
 		return jwt;
 	}
-	
+
 	public String getEmailFromJwtToken(String jwt) {
-		jwt=jwt.substring(7);
-		
-		Claims claims=Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
-		String email=String.valueOf(claims.get("email"));
-		
+		jwt = jwt.substring(7);
+
+		Claims claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
+		String email = String.valueOf(claims.get("email"));
+
 		return email;
 	}
-	
+
 	public String populateAuthorities(Collection<? extends GrantedAuthority> collection) {
-		Set<String> auths=new HashSet<>();
-		
-		for(GrantedAuthority authority:collection) {
+		Set<String> auths = new HashSet<>();
+		if (collection == null) {
+			return "";
+		}
+		for (GrantedAuthority authority : collection) {
 			auths.add(authority.getAuthority());
 		}
-		return String.join(",",auths);
+		return String.join(",", auths);
 	}
 
 }

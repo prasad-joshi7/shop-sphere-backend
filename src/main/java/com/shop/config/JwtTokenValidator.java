@@ -28,13 +28,12 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		
+
 		String jwt = request.getHeader(JwtConstant.JWT_HEADER);
-		System.out.println("jwt ------ "+jwt);
-		if(jwt!=null) {
-			jwt=jwt.substring(7);
-			System.out.println("jwt ------ "+jwt);
+		System.out.println("jwt ------ " + jwt);
+		if (jwt != null && !jwt.equalsIgnoreCase("Bearer null") && !jwt.equalsIgnoreCase("Bearer undefined")) {
 			try {
+				jwt = jwt.substring(7);
 				SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes());
 				Claims claims = Jwts.parserBuilder()
 						.setSigningKey(key)
@@ -49,14 +48,15 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 				Authentication athentication = new UsernamePasswordAuthenticationToken(email, null, auths);
 
 				SecurityContextHolder.getContext().setAuthentication(athentication);
-				
+
 			} catch (Exception e) {
-				// TODO: handle exception
-				throw new BadCredentialsException("invalid token...");
+				// Don't throw exception here, just don't set authentication.
+				// This allows permitAll() endpoints to still work if the token is mangled.
+				System.out.println("Invalid token received: " + e.getMessage());
 			}
 		}
 		filterChain.doFilter(request, response);
-		
+
 	}
 
 }
